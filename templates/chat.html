@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <section class="chatroom-box">
+                <section class="chatroom-log"></section>
+        </section>
+        <input id="chatroom-message-input" type="text"><br>
+        <input id="chatroom-message-submit" type="button" value="Send">
+
+        {{ chatroom_name|json_script:"chatroom-name" }}
+        {{ user.username|json_script:"username" }}
+
+        <script>
+        const chatroomName = JSON.parse(document.getElementById('chatroom-name').textContent);
+        const chatroomLog = document.querySelector('.chatroom-log');
+        const chatroomMessageInput = document.getElementById('chatroom-message-input');
+        const chatroomMessageSubmit = document.getElementById('chatroom-message-submit');
+        const username = JSON.parse(document.getElementById('username').textContent);
+        const chatWebSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/'
+            + chatroomName
+            + '/'
+        );
+
+        chatWebSocket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const messageDate = new Date(data.messageDate);
+            const messageBody = data.messageBody;
+            const messageUser = data.messageUser;
+
+            chatroomLog.innerHTML += (messageDate.toLocaleTimeString() + ' ' +  messageUser
+            + ': ' + messageBody + '<br/>');
+        };
+
+        chatWebSocket.onclose = function(event) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        chatWebSocket.onopen = function(event) {
+            if(chatroomLog.innerHTML === '') {
+                chatroomLog.innerHTML += ('Welcome to the chat room, ' + username + '<br/> <br/>');
+            }
+        };
+
+        chatroomMessageInput.focus();
+
+        chatroomMessageInput.onkeydown = function(event) {
+             if(event.keyCode === 13) {
+                chatroomMessageSubmit.click();
+             }
+        };
+
+        chatroomMessageSubmit.onclick = function(event) {
+            const messageBody = chatroomMessageInput.value;
+
+            chatWebSocket.send(JSON.stringify({
+                'messageBody': messageBody,
+            }));
+
+            chatroomMessageInput.value = '';
+        };
+    </script>
+{% endblock content %}

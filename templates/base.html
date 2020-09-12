@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="{% static 'css/base.css' %}" rel="stylesheet">
+
+        <meta charset="utf-8"/>
+
+        <title>Live Chat</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand bg-danger navbar-light">
+        {% if user.is_authenticated %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                         Log Out
+                    </a>
+                </li>
+            </ul>
+        {% else %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">
+                         Login
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'sign_up' %}">
+                         Sign Up
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+        </nav>
+
+        {% block content %}
+            {% endblock content %}
+    </body>
+</html>
