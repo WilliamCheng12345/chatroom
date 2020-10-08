@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Room(models.Model):
@@ -6,10 +7,15 @@ class Room(models.Model):
         max_length=100,
         primary_key=True,
     )
-    slug = models.SlugField(unique=True)
+    password = models.CharField(
+        max_length=30,
+    )
 
     def __str__(self):
         return self.room
+
+    def get_absolute_url(self):
+        return reverse('chat', kwargs={'room_name': self.room})
 
 class Message(models.Model):
     user = models.ForeignKey(

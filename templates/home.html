@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <p>Welcome {{user.username}}. Create a chat room by entering a name.</p>
+        <p>Welcome {{user.username}}. Get a chat room by entering a name or creating one
+                <a href="{% url 'room_new' %}">Here</a>
+        </p>
 
-        <input id="chatroom-name-input" type="text" size="150"><br>
-        <input id="chatroom-name-submit" type="button" value="Enter">
-
-        <script>
-            document.getElementById('chatroom-name-submit').onclick = function(event){
-                const chatRoomName = document.getElementById('chatroom-name-input').value;
-                window.location.pathname = '/' + chatRoomName + '/';
-            };
-        </script>
+        <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+        <input type="submit" value="Submit">
+        </form>
 {% endblock content %}
 
