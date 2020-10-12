@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Account</h2>
+    {% for room in rooms %}
+    <p>{{ room.room }}</p>
+    {% endfor %}
+{% endblock content %}

@@ -12,3 +12,14 @@
 .room-log {
   margin-top: 8px;
 }
+
+.container {
+   height: 400px;
+    width: 400px;
+    border-style: dotted;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+}

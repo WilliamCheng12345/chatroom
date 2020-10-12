@@ -1,14 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <p>Welcome {{user.username}}. Get a chat room by entering a name or creating one
-                <a href="{% url 'room_new' %}">Here</a>
-        </p>
+        {% if user.is_authenticated %}
 
-        <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-        <input type="submit" value="Submit">
-        </form>
+                <div class="container">
+                        <div class="row justify-content-center">
+                                <p>Welcome {{user.username}}. Get a chat room by entering a name or creating one
+                                        <a href="{% url 'room_new' %}">here</a>
+                                </p>
+                        </div>
+
+                        <div class="row justify-content-center">
+                                <form method="post">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <input type="submit" value="Submit">
+                                </form>
+                        </div>
+                </div>
+        {% else %}
+                <div class="container">
+                        <div class="row">
+                                <p>Please to login </p>
+                        </div>
+                </div>
+        {% endif %}
 {% endblock content %}
 
