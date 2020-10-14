@@ -9,7 +9,7 @@ from .views import (
 urlpatterns = [
     path('', renderHomePageView, name='home'),
     path('newRoom/', CreateRoomView.as_view(), name='room_new'),
-    path('deleteRoom/<int:pk>', DeleteRoomView.as_view(), name='room_delete'),
+    path('deleteRoom/<slug:room_name>/', DeleteRoomView.as_view(), name='room_delete'),
     path('<str:room_name>/', renderChatPageView, name='chat'),
 
 ]

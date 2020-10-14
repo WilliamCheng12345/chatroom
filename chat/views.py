@@ -13,12 +13,15 @@ class CreateRoomView(CreateView):
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
+        form.instance.slug = form.instance.room
         return super().form_valid(form)
 
 class DeleteRoomView(DeleteView):
     model = Room
     template_name = 'room-delete.html'
     success_url = reverse_lazy('home')
+    slug_url_kwarg = 'room_name'
+    slug_field = 'slug'
 
 def renderHomePageView(request):
     if request.method == 'POST':
@@ -36,13 +39,13 @@ def renderHomePageView(request):
 
                     return HttpResponseRedirect(reverse('chat', kwargs={'room_name': room_name}))
                 else:
-                    return render(request, '404.html')
+                    return render(request, 'incorrect-password.html')
             else:
-                return render(request, '404.html')
+                return render(request, 'nonexistent-room.html')
     else:
         form = RoomForm()
 
-    return render(request, 'home.html', {'form': form, })
+    return render(request, 'home.html', {'form': form})
 
 def renderChatPageView(request, room_name):
     if not request.session.get('form-submitted ' + room_name, False):

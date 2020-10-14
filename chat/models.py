@@ -2,17 +2,24 @@ from django.db import models
 from django.urls import reverse
 
 # Create your models here.
+from django.utils.text import slugify
+
+
 class Room(models.Model):
     room = models.CharField(
         max_length=100,
-        primary_key=True,
+        primary_key=True
     )
     password = models.CharField(
-        max_length=30,
+        max_length=30
     )
     creator = models.ForeignKey(
         'auth.User',
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE
+    )
+
+    slug = models.SlugField(
+        unique=True
     )
 
     def __str__(self):
